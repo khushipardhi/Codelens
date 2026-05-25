@@ -1,6 +1,6 @@
 # CodeLens Vercel Deployment
 
-## Required Vercel Settings
+## Required yo my friend om  Vercel Settings
 
 Set this server-side environment variable in Vercel:
 
