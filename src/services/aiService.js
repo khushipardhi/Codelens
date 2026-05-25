@@ -57,6 +57,18 @@ export const DEFAULT_AI_CONFIG = {
   apiKey: import.meta.env.VITE_NVIDIA_API_KEY || '',
 };
 
+function hasConfiguredProxy() {
+  return Boolean(import.meta.env.VITE_API_PROXY_URL);
+}
+
+function getEffectiveApiKey(apiKey) {
+  return (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
+}
+
+function canUseRemoteAi(apiKey, analysisMode = 'auto') {
+  return analysisMode !== 'offline' && (Boolean(getEffectiveApiKey(apiKey)) || hasConfiguredProxy());
+}
+
 // ---- Tone configurations ----
 const TONE_CONFIGS = {
   professional: {
@@ -143,7 +155,8 @@ function mergeAnalysisResults(localErrors, aiErrors) {
  * @returns {{ valid: boolean, error?: string }}
  */
 export async function validateApiKey(apiKey, baseUrl) {
-  if (!apiKey || !apiKey.trim()) {
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  if (!effectiveKey && !hasConfiguredProxy()) {
     return { valid: false, error: 'API key is empty.' };
   }
   try {
@@ -157,7 +170,7 @@ export async function validateApiKey(apiKey, baseUrl) {
     const res = await fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${apiKey.trim()}`,
+        ...(effectiveKey ? { Authorization: `Bearer ${effectiveKey}` } : {}),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
@@ -208,8 +221,8 @@ export async function analyzeCode(
   const localErrors = analyzeWithPatterns(code, language);
 
   // 2. Resolve the effective API key (settings > env)
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-  const canUseAI = !!effectiveKey && analysisMode !== 'offline';
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  const canUseAI = canUseRemoteAi(apiKey, analysisMode);
 
   // 3. AI Enhancement Layer
   if (canUseAI) {
@@ -389,9 +402,9 @@ function buildOfflineResult(code, language, localErrors, skillLevel, attemptCoun
  * Step-by-Step line-by-line explanation generator
  */
 export async function generateStepByStep(code, language, apiKey, aiConfig = {}, analysisMode = 'auto', analysis = null) {
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
+  const effectiveKey = getEffectiveApiKey(apiKey);
   let steps;
-  if (!effectiveKey || analysisMode === 'offline') {
+  if (!canUseRemoteAi(apiKey, analysisMode)) {
     steps = generateLocalStepByStep(code, language, analysis);
   } else {
     try {
@@ -653,8 +666,8 @@ function generateLocalStepByStep(code, language = 'Python', analysis = null) {
  * Chat panel question answering
  */
 export async function chatAboutCode(code, language, question, apiKey, aiConfig = {}, analysisMode = 'auto', classification = null, getLocalFallback = null) {
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-  if (!effectiveKey || analysisMode === 'offline') {
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  if (!canUseRemoteAi(apiKey, analysisMode)) {
     if (getLocalFallback && classification) {
       return { response: getLocalFallback() };
     }
@@ -685,8 +698,8 @@ export function localAnalyzer(code, language, skillLevel = 'beginner', attemptCo
 }
 
 export async function aiExplainError(code, language, errorName, lineNumber, localExplanation, suggestedFix, tone, skillLevel, apiKey, aiConfig) {
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-  if (!effectiveKey) throw new Error('No API key available');
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  if (!effectiveKey && !hasConfiguredProxy()) throw new Error('No API key available');
   
   const toneConfig = TONE_CONFIGS[tone] || TONE_CONFIGS.friendly;
   const toneInstruction = getToneInstruction(toneConfig);
@@ -696,8 +709,8 @@ export async function aiExplainError(code, language, errorName, lineNumber, loca
 }
 
 export async function aiTranslateBilingual(localExplanation, language, tone, apiKey, aiConfig) {
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-  if (!effectiveKey) throw new Error('No API key available');
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  if (!effectiveKey && !hasConfiguredProxy()) throw new Error('No API key available');
 
   const toneConfig = TONE_CONFIGS[tone] || TONE_CONFIGS.friendly;
   const toneInstruction = getToneInstruction(toneConfig);
@@ -706,15 +719,15 @@ export async function aiTranslateBilingual(localExplanation, language, tone, api
 }
 
 export async function aiGenerateCorrectedCode(code, language, errorSummary, apiKey, aiConfig) {
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-  if (!effectiveKey) throw new Error('No API key available');
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  if (!effectiveKey && !hasConfiguredProxy()) throw new Error('No API key available');
 
   return requestAiGenerateCorrectedCode(code, language, errorSummary, effectiveKey, aiConfig);
 }
 
 export async function aiConfidenceMessage(errorSummary, tone, apiKey, aiConfig) {
-  const effectiveKey = (apiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-  if (!effectiveKey) throw new Error('No API key available');
+  const effectiveKey = getEffectiveApiKey(apiKey);
+  if (!effectiveKey && !hasConfiguredProxy()) throw new Error('No API key available');
 
   const toneConfig = TONE_CONFIGS[tone] || TONE_CONFIGS.friendly;
   const toneInstruction = getToneInstruction(toneConfig);

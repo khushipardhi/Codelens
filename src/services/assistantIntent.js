@@ -62,7 +62,7 @@ export function classifyUserQuery(question, context = {}) {
 }
 
 // Builds the system prompt for the AI based on classification
-export function buildTopicSpecificPrompt({ question, classification, style = 'friendly', codeContext = '' }) {
+export function buildTopicSpecificPrompt({ classification }) {
   const { topic, intent, isDetailed } = classification;
   
   let prompt = `You are CodeLens, a supportive coding mentor. Answer strictly in a beginner-friendly, clear, and professional tone. Avoid robotic textbook language. Be visually clean.\n`;
@@ -100,8 +100,8 @@ DO NOT add text outside this format.\n`;
 }
 
 // Provides a local fallback answer if AI is offline
-export function getLocalAssistantFallback({ question, classification, style = 'friendly' }) {
-  const { topic, intent } = classification;
+export function getLocalAssistantFallback({ classification }) {
+  const { topic } = classification;
   
   let problem = "AI is temporarily offline.";
   let fix = "Check your code for obvious typos.";

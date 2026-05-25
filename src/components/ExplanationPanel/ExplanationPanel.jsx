@@ -63,7 +63,6 @@ export default function ExplanationPanel({
   attemptCount = 0,
   onOpenAbout,
   onLineSelect,
-  code,
   isEnhancingExplanation,
   aiEnhancementError,
   correctedCode,

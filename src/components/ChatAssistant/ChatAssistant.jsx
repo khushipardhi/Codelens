@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { MessageCircle, X, Send, Sparkles, User, Bot, Paperclip, Image as ImageIcon, Trash2 } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, User, Bot, Paperclip, Image as ImageIcon } from 'lucide-react';
 import { chatAboutCode } from '../../services/aiService';
 import { classifyUserQuery, getLocalAssistantFallback } from '../../services/assistantIntent';
 import { validateFileAttachment, validateImageAttachment, processTextFile, processImageFile } from '../../services/attachmentUtils';

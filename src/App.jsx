@@ -60,6 +60,7 @@ const LANG_DETECT_DEBOUNCE_MS = 300;
 export default function App() {
   const { settings, updateSetting, toggleTheme } = useSettings();
   const { addEntry } = useAnalysisHistory();
+  const hasAiProxy = Boolean(import.meta.env.VITE_API_PROXY_URL);
 
   // ---- UI state ----
   const [showAbout, setShowAbout] = useState(false);
@@ -115,7 +116,7 @@ export default function App() {
 
   const handleReconnect = useCallback(async () => {
     const keyToTest = settings.apiKey || DEFAULT_AI_CONFIG.apiKey;
-    if (!keyToTest) {
+    if (!keyToTest && !hasAiProxy) {
       showToast('No API key configured. Open Settings to set one.', 'error');
       return;
     }
@@ -137,7 +138,7 @@ export default function App() {
         onClick: handleReconnect,
       });
     }
-  }, [settings.apiKey, settings.aiBaseUrl, updateSetting, showToast]);
+  }, [settings.apiKey, settings.aiBaseUrl, updateSetting, showToast, hasAiProxy]);
 
   // ---- Startup API Connection Auto-Verification ----
   const hasInitializedRef = useRef(false);
@@ -147,7 +148,7 @@ export default function App() {
 
     const startupVerify = async () => {
       const keyToTest = settings.apiKey || DEFAULT_AI_CONFIG.apiKey;
-      if (settings.analysisMode === 'ai' && keyToTest) {
+      if (settings.analysisMode === 'ai' && (keyToTest || hasAiProxy)) {
         try {
           const result = await validateApiKey(keyToTest, settings.aiBaseUrl || DEFAULT_AI_CONFIG.baseUrl);
           if (!result.valid) {
@@ -173,7 +174,7 @@ export default function App() {
       }
     };
     startupVerify();
-  }, [settings.analysisMode, settings.apiKey, settings.aiBaseUrl, handleReconnect, showToast]);
+  }, [settings.analysisMode, settings.apiKey, settings.aiBaseUrl, handleReconnect, showToast, hasAiProxy]);
 
   // ---- Debounced language detection ----
   const [detectedLanguage, setDetectedLanguage] = useState(() => detectLanguage(''));
@@ -346,7 +347,7 @@ export default function App() {
 
       // --- AI ENHANCEMENT ---
       const effectiveKey = (activeApiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-      const canUseAI = !!effectiveKey && settings.analysisMode !== 'offline';
+      const canUseAI = (Boolean(effectiveKey) || hasAiProxy) && settings.analysisMode !== 'offline';
 
       if (canUseAI) {
         setIsEnhancingExplanation(true);
@@ -460,13 +461,13 @@ export default function App() {
         beginnerTip: 'If this keeps happening, check your internet connection or switch to Offline mode in Settings.',
       });
     }
-  }, [code, detectedLanguage, settings.tone, activeApiKey, aiConfig, addEntry, adaptiveState, currentAttemptCount, settings.analysisMode, showToast]);
+  }, [code, detectedLanguage, settings.tone, activeApiKey, aiConfig, addEntry, adaptiveState, currentAttemptCount, settings.analysisMode, showToast, hasAiProxy]);
 
   const handleRequestCorrectedCode = useCallback(async () => {
     if (!analysis || !analysis.errors || analysis.errors.length === 0) return;
     
     const effectiveKey = (activeApiKey || '').trim() || (import.meta.env.VITE_NVIDIA_API_KEY || '').trim();
-    if (!effectiveKey) {
+    if (!effectiveKey && !hasAiProxy) {
       setCorrectedCodeError('No API key available for AI corrected code.');
       return;
     }
@@ -489,7 +490,7 @@ export default function App() {
     } finally {
       setIsLoadingCorrectedCode(false);
     }
-  }, [analysis, activeApiKey, aiConfig, code]);
+  }, [analysis, activeApiKey, aiConfig, code, hasAiProxy]);
 
   /** Load the built-in sample code */
   const handleLoadSample = useCallback(() => {
@@ -614,7 +615,7 @@ export default function App() {
             <AIStatusBadge
               analysisMode={settings.analysisMode}
               apiKey={settings.apiKey}
-              hasEnvKey={!!DEFAULT_AI_CONFIG.apiKey}
+              hasEnvKey={!!DEFAULT_AI_CONFIG.apiKey || hasAiProxy}
             />
           </div>
 

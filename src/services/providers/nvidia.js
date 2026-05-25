@@ -412,7 +412,7 @@ ${code}
  * Chat about code with Nvidia
  */
 export async function chatAboutCodeWithNvidia(code, language, question, apiKey, aiConfig, classification = null) {
-  let systemPrompt = '';
+  let systemPrompt;
   if (classification) {
     systemPrompt = buildTopicSpecificPrompt({ question, classification, style: 'friendly', codeContext: code });
   } else {
