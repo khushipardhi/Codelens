@@ -6,12 +6,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api/nvidia': {
+      '/api/ai': {
         target: 'https://integrate.api.nvidia.com/v1',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/nvidia/, ''),
+        rewrite: (path) => {
+          if (path.includes('test=true')) return '/models';
+          return '/chat/completions';
+        },
         secure: true,
-      },
+      }
     },
   },
 })

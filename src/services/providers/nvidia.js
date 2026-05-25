@@ -27,20 +27,13 @@ function isDefaultNvidiaUrl(baseUrl) {
  * are used directly to avoid proxy-induced CORS failures.
  */
 export function getApiUrl(baseUrl) {
-  // If the URL is NOT default, we always bypass the proxy and use the custom URL directly
+  // If the URL is NOT default, we bypass the proxy and use the custom URL directly
   if (!isDefaultNvidiaUrl(baseUrl)) {
     return `${normalizeBaseUrl(baseUrl)}/chat/completions`;
   }
 
-  const proxyUrl = import.meta.env.VITE_API_PROXY_URL;
-  if (proxyUrl) return proxyUrl;
-
-  // In dev mode, use Vite proxy only for the default Nvidia endpoint
-  if (import.meta.env.DEV) {
-    return '/api/nvidia/chat/completions';
-  }
-
-  return `${normalizeBaseUrl(baseUrl)}/chat/completions`;
+  // Always use the Vercel proxy for default endpoints
+  return '/api/ai';
 }
 
 /**
@@ -51,10 +44,7 @@ export function getValidateUrl(baseUrl) {
   if (!isDefaultNvidiaUrl(baseUrl)) {
     return `${normalizeBaseUrl(baseUrl)}/models`;
   }
-  if (import.meta.env.DEV) {
-    return '/api/nvidia/models';
-  }
-  return `${normalizeBaseUrl(baseUrl)}/models`;
+  return '/api/ai?test=true';
 }
 
 // Helper to fetch with timeout and retries
@@ -142,28 +132,17 @@ async function requestNvidiaCompletion({
   timeoutMs = 15000,
   maxRetries = 1,
 }) {
-  const proxyUrl = import.meta.env.VITE_API_PROXY_URL;
-
-  let fetchUrl;
+  let fetchUrl = getApiUrl(baseUrl);
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  if (proxyUrl && isDefaultNvidiaUrl(baseUrl)) {
-    fetchUrl = proxyUrl;
-    const proxyKey = import.meta.env.VITE_API_PROXY_KEY;
-    if (proxyKey) {
-      headers['X-Proxy-Key'] = proxyKey;
-    } else if (apiKey) {
-      headers['Authorization'] = `Bearer ${apiKey}`;
-    }
-  } else {
-    const key = apiKey || import.meta.env.VITE_NVIDIA_API_KEY || '';
-    if (!key) {
-      throw new Error('No API key found. Please add your Nvidia API key in Settings or the .env file.');
-    }
-    fetchUrl = getApiUrl(baseUrl);
+  const key = apiKey || import.meta.env.VITE_NVIDIA_API_KEY || '';
+  if (key) {
     headers['Authorization'] = `Bearer ${key}`;
+  } else if (!isDefaultNvidiaUrl(baseUrl)) {
+    // If it's a custom endpoint and we have no key, it might fail, but proxy handles its own key
+    throw new Error('No API key found. Please add your API key in Settings.');
   }
 
   const payload = {
