@@ -1,0 +1,261 @@
+/* =============================================
+   Code Editor — Premium Glass Panel
+   ============================================= */
+
+.code-editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-glass);
+  background: var(--glass-heavy);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  overflow: hidden;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+}
+
+.code-editor-container::before {
+  /* Subtle inner top highlight — glass light-catch */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.code-editor-container:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-xl), 0 0 24px rgba(91, 140, 255, 0.05);
+}
+
+.code-editor-container:focus-within {
+  border-color: var(--accent-blue);
+  box-shadow: var(--shadow-xl), 0 0 28px rgba(91, 140, 255, 0.12);
+}
+
+.code-editor-container.dragging {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 1px var(--accent-blue), var(--shadow-glow);
+}
+
+/* ── Editor Header ── */
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-glass);
+  background: linear-gradient(180deg, rgba(255,255,255,0.035) 0%, transparent 100%);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.editor-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-icon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.editor-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.2px;
+}
+
+/* ── Editor Language Badge ── */
+.editor-lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: var(--radius-full);
+  background: var(--accent-blue-dim);
+  border: 1px solid rgba(91,140,255,0.18);
+  color: var(--accent-blue);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  animation: fadeInScale var(--transition-bounce) ease-out;
+  cursor: default;
+  user-select: none;
+  transition: all var(--transition-fast);
+}
+
+.editor-lang-badge:hover {
+  background: var(--accent-blue-glow);
+  border-color: rgba(91,140,255,0.3);
+}
+
+.editor-lang-badge--unclear {
+  background: transparent;
+  border-color: var(--border-subtle);
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.editor-lang-icon { font-size: 12px; line-height: 1; }
+
+.editor-lang-pct {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  opacity: 0.9;
+  letter-spacing: 0.2px;
+}
+
+/* ── Editor Actions ── */
+.editor-header-right {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.editor-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.editor-action-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--glass-light);
+}
+
+.editor-action-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.editor-action-btn.danger:hover:not(:disabled) {
+  color: var(--accent-rose);
+  background: var(--accent-rose-dim);
+}
+
+.copy-toast {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-green);
+  color: white;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  animation: fadeInUp var(--transition-fast) ease-out;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(31,212,168,0.3);
+}
+
+/* ── Editor Wrapper ── */
+.editor-wrapper {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+/* Subtle focus glow ring on the editor wrapper */
+.code-editor-container:focus-within .editor-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(91,140,255,0.08);
+}
+
+/* ── Drag Overlay ── */
+.drag-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  background: rgba(8,12,30,0.88);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  color: var(--accent-blue);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  animation: fadeIn var(--transition-fast) ease-out;
+  border: 2px dashed var(--accent-blue);
+}
+
+/* ── Error Line Decorations (Monaco injected) ── */
+.error-line-highlight {
+  background: rgba(240,98,146,0.06) !important;
+  border-left: 2px solid var(--accent-rose) !important;
+}
+
+.error-glyph-margin {
+  background: var(--accent-rose);
+  border-radius: 50%;
+  width: 7px !important;
+  height: 7px !important;
+  margin: auto;
+}
+
+/* ── Backward compat ── */
+.language-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-blue-dim);
+  color: var(--accent-blue);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+.language-icon { font-size: 12px; }
+
+/* ── Premium Monaco Overrides ── */
+.monaco-editor .current-line {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: none !important;
+}
+
+[data-theme="light"] .monaco-editor .current-line {
+  background: rgba(15, 23, 42, 0.03) !important;
+}
+
+.monaco-editor .monaco-scrollable-element .slider {
+  background: rgba(91, 140, 255, 0.2) !important;
+  border-radius: var(--radius-full) !important;
+}
+
+.monaco-editor .monaco-scrollable-element .slider:hover {
+  background: rgba(91, 140, 255, 0.35) !important;
+}
+
+[data-theme="light"] .monaco-editor .monaco-scrollable-element .slider {
+  background: rgba(37, 99, 235, 0.15) !important;
+}
+
+[data-theme="light"] .monaco-editor .monaco-scrollable-element .slider:hover {
+  background: rgba(37, 99, 235, 0.25) !important;
+}

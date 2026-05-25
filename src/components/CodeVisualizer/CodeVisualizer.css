@@ -1,0 +1,169 @@
+/* src/components/CodeVisualizer/CodeVisualizer.css */
+
+.visualizer-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-tertiary);
+  text-align: center;
+  padding: 2rem;
+}
+
+.visualizer-empty-icon {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.code-compare {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.code-compare-body {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (max-width: 900px) {
+  .code-compare-body {
+    flex-direction: column;
+  }
+}
+
+.code-compare-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-heavy);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  min-height: 200px;
+}
+
+.code-compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--glass-light);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.code-compare-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.code-compare-lang {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.code-compare-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--glass-medium);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.code-compare-copy:hover {
+  background: var(--glass-light);
+  color: var(--text-primary);
+}
+
+.icon-success {
+  color: var(--accent-green);
+}
+
+.code-compare-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.code-compare-line {
+  display: flex;
+  padding: 0 1rem;
+  border-left: 3px solid transparent;
+}
+
+.code-compare-line-number {
+  min-width: 2.5rem;
+  color: var(--text-tertiary);
+  user-select: none;
+  text-align: right;
+  padding-right: 1rem;
+  opacity: 0.6;
+}
+
+.code-compare-line-content {
+  margin: 0;
+  color: var(--text-primary);
+  white-space: pre;
+  tab-size: 4;
+}
+
+/* Light Mode Defaults for Highlights */
+.code-compare-line--mistake {
+  background: rgba(239, 68, 68, 0.05); /* soft red */
+  border-left-color: rgba(239, 68, 68, 0.4);
+}
+
+.code-compare-line--corrected {
+  background: rgba(16, 185, 129, 0.05); /* soft green */
+  border-left-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Dark Mode Overrides for Highlights */
+@media (prefers-color-scheme: dark) {
+  .code-compare-line--mistake {
+    background: rgba(244, 63, 94, 0.08); /* rose-500 */
+    border-left-color: rgba(244, 63, 94, 0.5);
+  }
+
+  .code-compare-line--corrected {
+    background: rgba(16, 185, 129, 0.08); /* emerald-500 */
+    border-left-color: rgba(16, 185, 129, 0.5);
+  }
+}
+
+/* Syntax Tokens */
+.code-token-keyword { color: #c678dd; }
+.code-token-string { color: #98c379; }
+.code-token-number { color: #d19a66; }
+.code-token-comment { color: #5c6370; font-style: italic; }
+
+/* Light Mode Tokens */
+@media (prefers-color-scheme: light) {
+  .code-token-keyword { color: #a626a4; }
+  .code-token-string { color: #50a14f; }
+  .code-token-number { color: #986801; }
+  .code-token-comment { color: #a0a1a7; }
+}

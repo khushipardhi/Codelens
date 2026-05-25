@@ -1,0 +1,238 @@
+/* =============================================
+   Detection Card Styles
+   Clean, minimal, professional
+   ============================================= */
+
+.detection-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+  animation: fadeIn var(--transition-base) ease-out;
+}
+
+.detection-card:hover {
+  border-color: var(--border-default);
+}
+
+.detection-card--ambiguous {
+  border-color: rgba(240, 180, 41, 0.3);
+}
+
+/* ---- Header ---- */
+.detection-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: var(--space-sm);
+  font-family: var(--font-sans);
+  transition: background var(--transition-fast);
+}
+
+.detection-card-header:hover {
+  background: var(--bg-glass);
+}
+
+.detection-header-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.detection-cpu-icon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.detection-header-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.detection-lang-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  background: var(--accent-blue-glow);
+  border: 1px solid rgba(77, 124, 254, 0.2);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.detection-confidence-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.detection-ambiguous-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  background: var(--accent-amber-glow);
+  color: var(--accent-amber);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.detection-toggle-icon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* ---- Body ---- */
+.detection-card-body {
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 200ms ease-out;
+}
+
+/* ---- Confidence Bar ---- */
+.detection-confidence-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detection-conf-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  white-space: nowrap;
+  min-width: 64px;
+}
+
+.detection-conf-bar-track {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.detection-conf-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 600ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.detection-conf-pct {
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* ---- Detection Reasons ---- */
+.detection-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detection-reasons-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.detection-reasons-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+}
+
+.detection-reason-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.detection-reason-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+/* ---- Ambiguous Section ---- */
+.detection-ambiguous-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-amber-glow);
+  border: 1px solid rgba(240, 180, 41, 0.15);
+}
+
+.detection-ambiguous-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-amber);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detection-candidates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.detection-candidate-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.candidate-pct {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.detection-ambiguous-hint {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-style: italic;
+  line-height: 1.4;
+}
