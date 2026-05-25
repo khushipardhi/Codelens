@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CodeLens — Understand Errors. Build Confidence.
 
 > An AI-powered, beginner-friendly coding assistant that turns cryptic error messages into clear, encouraging explanations.
@@ -181,3 +182,6 @@ Contributions are welcome! Please:
 ## License
 
 MIT © CodeLens Contributors
+=======
+# Codelens
+>>>>>>> 8eee63e2256cc8ca54207e423d0b41c8349114d5
