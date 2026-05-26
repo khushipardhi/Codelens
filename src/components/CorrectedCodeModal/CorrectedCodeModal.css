@@ -6,8 +6,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  background: color-mix(in srgb, #000 42%, transparent);
+  backdrop-filter: blur(8px);
   z-index: 1000; /* High enough to be above the chat bubble */
   display: flex;
   align-items: center;
@@ -16,12 +16,30 @@
 }
 
 .corrected-code-modal {
-  width: 100%;
+  width: min(100%, 1200px);
   max-width: 1200px;
   max-height: min(82vh, 760px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    width 0.22s ease,
+    max-width 0.22s ease,
+    height 0.22s ease,
+    max-height 0.22s ease,
+    transform 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.corrected-code-modal--maximized {
+  width: min(95vw, 1600px);
+  max-width: 95vw;
+  height: 88vh;
+  max-height: 90vh;
 }
 
 .corrected-code-header {
@@ -40,26 +58,40 @@
   color: var(--text-primary);
 }
 
-.corrected-code-close {
-  background: transparent;
-  border: none;
-  color: var(--text-tertiary);
-  cursor: pointer;
+.corrected-code-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: all 0.2s ease;
+  gap: 0.35rem;
 }
 
-.corrected-code-close:hover {
+.corrected-code-icon-button {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.corrected-code-icon-button:hover {
   background: var(--bg-hover);
+  border-color: var(--border-subtle);
   color: var(--text-primary);
+}
+
+.corrected-code-icon-button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 .corrected-code-body {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden; /* CodeVisualizer itself handles inner scrolling */
@@ -69,6 +101,25 @@
 
 @media (max-width: 768px) {
   .corrected-code-overlay {
-    padding: 1rem;
+    padding: 0.75rem;
+  }
+
+  .corrected-code-modal {
+    max-height: 90vh;
+  }
+
+  .corrected-code-modal--maximized {
+    width: 96vw;
+    max-width: 96vw;
+    height: 90vh;
+    max-height: 90vh;
+  }
+
+  .corrected-code-header {
+    padding: 0.85rem 1rem;
+  }
+
+  .corrected-code-body {
+    padding: 0.75rem;
   }
 }
