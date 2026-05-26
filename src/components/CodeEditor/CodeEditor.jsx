@@ -12,38 +12,46 @@ export default function CodeEditor({
   selectedLineInfo,
 }) {
   const editorRef = useRef(null);
+  const monacoRef = useRef(null);
   const fileInputRef = useRef(null);
+  const errorDecorationIdsRef = useRef([]);
   const [isDragging, setIsDragging] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const handleEditorMount = (editor) => {
+  const handleEditorMount = (editor, monaco) => {
     editorRef.current = editor;
+    monacoRef.current = monaco;
     editor.focus();
   };
 
   // Highlight error lines via decorations
   useEffect(() => {
-    if (editorRef.current && errorLines.length > 0) {
-      const decorations = errorLines.map((line) => ({
-        range: {
-          startLineNumber: line,
-          startColumn: 1,
-          endLineNumber: line,
-          endColumn: 1,
-        },
-        options: {
-          isWholeLine: true,
-          className: 'error-line-highlight',
-          glyphMarginClassName: 'error-glyph-margin',
-          overviewRuler: {
-            color: '#f472b6',
-            position: 1,
-          },
-        },
-      }));
-      editorRef.current.deltaDecorations([], decorations);
-    }
-  }, [errorLines]);
+    const editor = editorRef.current;
+    const monaco = monacoRef.current;
+    const model = editor?.getModel();
+
+    if (!editor || !monaco || !model) return;
+
+    const lineCount = model.getLineCount();
+    const uniqueErrorLines = [...new Set(errorLines)]
+      .map(Number)
+      .filter((line) => Number.isInteger(line) && line >= 1 && line <= lineCount);
+
+    const newDecorations = uniqueErrorLines.map((line) => ({
+      range: new monaco.Range(line, 1, line, model.getLineMaxColumn(line)),
+      options: {
+        isWholeLine: true,
+        className: 'codelens-error-line',
+        linesDecorationsClassName: 'codelens-error-line-marker',
+        glyphMarginClassName: 'codelens-error-glyph',
+      },
+    }));
+
+    errorDecorationIdsRef.current = editor.deltaDecorations(
+      errorDecorationIdsRef.current,
+      newDecorations
+    );
+  }, [errorLines, code]);
 
   // Handle programmatic line scrolling and highlighting
   useEffect(() => {
