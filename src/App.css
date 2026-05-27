@@ -609,3 +609,104 @@
 [data-theme="light"] .codelens-credit {
   color: #64748b; /* clean slate/gray */
 }
+
+/* ── Preview Mode Layout Overrides (Testing Only) ── */
+
+/* 1. Force Desktop */
+.app.preview-desktop.is-workspace {
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+.app.preview-desktop .app-main {
+  height: calc(100vh - var(--navbar-height)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding: 14px var(--space-lg) var(--space-md) !important;
+}
+
+.app.preview-desktop .app-workspace {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  gap: 10px !important;
+}
+
+.app.preview-desktop .workspace-editor,
+.app.preview-desktop .workspace-explanation {
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.app.preview-desktop .app-toolbar {
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.app.preview-desktop .toolbar-left {
+  flex-direction: row !important;
+}
+
+.app.preview-desktop .toolbar-actions {
+  width: auto !important;
+  justify-content: flex-end !important;
+}
+
+.app.preview-desktop .sample-btn,
+.app.preview-desktop .analyze-btn {
+  flex: none !important;
+  width: auto !important;
+}
+
+/* 2. Force Mobile */
+.app.preview-mobile.is-workspace {
+  height: auto !important;
+  overflow: auto !important;
+}
+
+.app.preview-mobile .app-main {
+  height: auto !important;
+  overflow: visible !important;
+  padding: var(--space-sm) var(--space-md) !important;
+}
+
+.app.preview-mobile .app-workspace {
+  grid-template-columns: 1fr !important;
+  height: auto !important;
+  overflow: visible !important;
+  gap: 10px !important;
+}
+
+.app.preview-mobile .workspace-editor,
+.app.preview-mobile .workspace-explanation {
+  min-height: 320px !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.app.preview-mobile .app-toolbar {
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+.app.preview-mobile .toolbar-left {
+  justify-content: flex-start !important;
+}
+
+.app.preview-mobile .toolbar-actions {
+  justify-content: stretch !important;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.app.preview-mobile .sample-btn,
+.app.preview-mobile .analyze-btn {
+  flex: 1 !important;
+  justify-content: center !important;
+}
+

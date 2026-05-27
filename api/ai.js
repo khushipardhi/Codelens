@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     if (contentType.includes('application/json')) {
       try {
         body = JSON.parse(textBody);
-      } catch (parseError) {
+      } catch {
         return res.status(500).json({ error: { message: 'Response parsing failed. Upstream returned invalid JSON.' } });
       }
       return res.json(body);

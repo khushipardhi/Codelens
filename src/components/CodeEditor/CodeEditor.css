@@ -308,3 +308,44 @@
 [data-theme="light"] .monaco-editor .monaco-scrollable-element .slider:hover {
   background: rgba(37, 99, 235, 0.25) !important;
 }
+
+/* ── Mobile Layout Adjustments ── */
+@media (max-width: 768px) {
+  .editor-header {
+    padding: 6px 10px;
+  }
+  .editor-title {
+    font-size: var(--text-xs);
+  }
+  .editor-lang-badge {
+    padding: 1px 7px;
+    font-size: 10px;
+  }
+  .editor-action-btn {
+    width: 24px;
+    height: 24px;
+  }
+  .code-editor-container {
+    height: 350px !important;
+  }
+}
+
+/* ── Preview Mobile Support ── */
+.preview-mobile .editor-header {
+  padding: 6px 10px !important;
+}
+.preview-mobile .editor-title {
+  font-size: var(--text-xs) !important;
+}
+.preview-mobile .editor-lang-badge {
+  padding: 1px 7px !important;
+  font-size: 10px !important;
+}
+.preview-mobile .editor-action-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+.preview-mobile .code-editor-container {
+  height: 350px !important;
+}
+

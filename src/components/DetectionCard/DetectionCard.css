@@ -236,3 +236,22 @@
   font-style: italic;
   line-height: 1.4;
 }
+
+/* ── Mobile Layout Adjustments ── */
+@media (max-width: 768px) {
+  .detection-card-header {
+    padding: 6px 10px !important;
+  }
+  .detection-header-left {
+    gap: 4px !important;
+  }
+}
+
+/* ── Preview Mobile Support ── */
+.preview-mobile .detection-card-header {
+  padding: 6px 10px !important;
+}
+.preview-mobile .detection-header-left {
+  gap: 4px !important;
+}
+

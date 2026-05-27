@@ -123,3 +123,27 @@
     padding: 0.75rem;
   }
 }
+
+/* ── Preview Mobile Overrides ── */
+.preview-mobile .corrected-code-overlay {
+  padding: 0.75rem !important;
+}
+
+.preview-mobile .corrected-code-modal {
+  max-height: 90vh !important;
+}
+
+.preview-mobile .corrected-code-modal--maximized {
+  width: 96vw !important;
+  max-width: 96vw !important;
+  height: 90vh !important;
+  max-height: 90vh !important;
+}
+
+.preview-mobile .corrected-code-header {
+  padding: 0.85rem 1rem !important;
+}
+
+.preview-mobile .corrected-code-body {
+  padding: 0.75rem !important;
+}

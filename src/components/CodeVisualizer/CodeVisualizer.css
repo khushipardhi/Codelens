@@ -199,3 +199,12 @@
   .code-token-number { color: #986801; }
   .code-token-comment { color: #a0a1a7; }
 }
+
+/* ── Preview Mobile Overrides ── */
+.preview-mobile .code-compare-body {
+  flex-direction: column !important;
+}
+
+.preview-mobile .code-compare-panel {
+  min-height: 220px !important;
+}

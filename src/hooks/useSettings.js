@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS = {
   showLineNumbers: true,
   wordWrap: 'on',
   minimap: false,
+  previewLayoutMode: 'auto',
 };
 
 export function useSettings() {

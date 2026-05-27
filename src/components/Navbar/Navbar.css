@@ -192,6 +192,18 @@
   .navbar-text-btn span { display: none; }
 }
 
+.preview-mobile .logo-tagline {
+  display: none !important;
+}
+
+.preview-mobile .navbar-inner {
+  padding: 0 var(--space-md) !important;
+}
+
+.preview-mobile .navbar-text-btn span {
+  display: none !important;
+}
+
 /* ── Light Mode Redesign Overrides ── */
 [data-theme="light"] .navbar {
   background: rgba(255, 255, 255, 0.75);

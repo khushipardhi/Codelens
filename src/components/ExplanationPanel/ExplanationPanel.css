@@ -671,3 +671,60 @@
   gap: 10px;
 }
 
+/* ── Mobile Layout Adjustments ── */
+@media (max-width: 768px) {
+  .panel-content {
+    padding: 10px !important;
+  }
+  .error-card-header {
+    padding: 10px !important;
+  }
+  .error-card-body {
+    padding: 0 10px 10px !important;
+    gap: var(--space-xs) !important;
+  }
+  .explanation-block {
+    padding: var(--space-xs) var(--space-sm) !important;
+  }
+  .error-name {
+    font-size: var(--text-sm) !important;
+  }
+  .error-number {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: var(--text-xs) !important;
+  }
+  .step-details-grid {
+    padding: 8px 10px !important;
+    gap: var(--space-xs) !important;
+  }
+}
+
+/* ── Preview Mobile Support ── */
+.preview-mobile .panel-content {
+  padding: 10px !important;
+}
+.preview-mobile .error-card-header {
+  padding: 10px !important;
+}
+.preview-mobile .error-card-body {
+  padding: 0 10px 10px !important;
+  gap: var(--space-xs) !important;
+}
+.preview-mobile .explanation-block {
+  padding: var(--space-xs) var(--space-sm) !important;
+}
+.preview-mobile .error-name {
+  font-size: var(--text-sm) !important;
+}
+.preview-mobile .error-number {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: var(--text-xs) !important;
+}
+.preview-mobile .step-details-grid {
+  padding: 8px 10px !important;
+  gap: var(--space-xs) !important;
+}
+
+

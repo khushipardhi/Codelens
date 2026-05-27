@@ -595,6 +595,20 @@ export default function SettingsModal({ settings, onUpdateSetting, onClose, diag
                 <span className="toggle-thumb" />
               </button>
             </div>
+
+            <div className="settings-field" style={{ marginTop: '16px' }}>
+              <label className="field-label" htmlFor="preview-layout-select">Layout Preview (Testing)</label>
+              <select
+                id="preview-layout-select"
+                className="settings-input settings-select"
+                value={settings.previewLayoutMode || 'auto'}
+                onChange={(e) => onUpdateSetting('previewLayoutMode', e.target.value)}
+              >
+                <option value="auto">Auto (Responsive)</option>
+                <option value="desktop">Force Desktop</option>
+                <option value="mobile">Force Mobile</option>
+              </select>
+            </div>
           </div>
 
           {/* ──────────────────────────────────────── */}

@@ -421,3 +421,28 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ── Preview Mobile Overrides ── */
+.preview-mobile .concept-modal {
+  max-height: 90vh !important;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+}
+
+.preview-mobile .concept-overlay {
+  align-items: flex-end !important;
+  padding: 0 !important;
+}
+
+.preview-mobile .concept-tabs {
+  overflow-x: auto !important;
+  padding: 0 var(--space-md) !important;
+}
+
+.preview-mobile .concept-body {
+  padding: var(--space-md) !important;
+}
+
+.preview-mobile .topics-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+

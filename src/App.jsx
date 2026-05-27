@@ -552,7 +552,7 @@ export default function App() {
   // ---- Render ----
   if (showAbout) {
     return (
-      <div className="app" data-theme={settings.theme}>
+      <div className={`app ${settings.previewLayoutMode ? `preview-${settings.previewLayoutMode}` : ''}`} data-theme={settings.theme}>
         <Navbar
           theme={settings.theme}
           onToggleTheme={toggleTheme}
@@ -594,7 +594,7 @@ export default function App() {
   }
 
   return (
-    <div className="app is-workspace" data-theme={settings.theme}>
+    <div className={`app is-workspace ${settings.previewLayoutMode ? `preview-${settings.previewLayoutMode}` : ''}`} data-theme={settings.theme}>
       <Navbar
         theme={settings.theme}
         onToggleTheme={toggleTheme}
